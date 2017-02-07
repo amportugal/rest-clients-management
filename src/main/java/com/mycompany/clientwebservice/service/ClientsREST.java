@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ResponseHeader;
+import static java.lang.System.out;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,6 +20,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,7 +30,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 
 /**
  *
@@ -37,6 +43,9 @@ import javax.ws.rs.core.MediaType;
 @Api
 @Path("/clients")
 public class ClientsREST{
+    
+    @Context 
+    HttpServletResponse response;
 
     @PersistenceContext(unitName = "com.mycompany_ClientWebService_war_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -162,7 +171,6 @@ public class ClientsREST{
                     name="nif",
                     required=true)
             @PathParam("nif") Integer id) {
-        //TODO: ArrayIndexOutOfBounds exception
         Query q = getEntityManager().createNamedQuery("getClientFromNIF").setParameter(1, id);
         Client client = (Client) q.getResultList().get(0);
         

@@ -8,6 +8,8 @@ package com.mycompany.clientwebservice.service;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -23,11 +25,18 @@ public class ApplicationConfig extends Application {
         conf.setTitle("Clients API");
         conf.setDescription("Client management web service");
         conf.setVersion("1.0.0");
-        conf.setHost("localhost:8080");
+        conf.setHost("localhost:8181");
         conf.setBasePath("/ClientWebService/webresources");
-        conf.setSchemes(new String[] { "http" });
+        conf.setSchemes(new String[] { "https" });
         conf.setResourcePackage("com.mycompany.clientwebservice.service");
         conf.setScan(true);
+    }
+    
+    @Override
+    public Map<String, Object> getProperties() {
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put("jersey.config.server.provider.packages", "com.mycompany.clientwebservice.service");
+        return properties;
     }
 
     @Override
